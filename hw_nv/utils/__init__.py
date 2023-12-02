@@ -1,1 +1,1 @@
-from mel_spectrogram import MelSpectrogramConfig, MelSpectrogram
+from .mel_spectrogram import MelSpectrogramConfig, MelSpectrogram

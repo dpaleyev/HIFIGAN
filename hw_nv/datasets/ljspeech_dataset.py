@@ -25,10 +25,8 @@ class LJSpeechDataset(Dataset):
         if self.wav_max_len:
             begin = random.randint(0, wav_gt.shape[-1] - self.wav_max_len)
             wav_gt = wav_gt[:, begin:begin + self.wav_max_len]
-        mel_gt = self.mel_spec_transf(wav_gt.detach()).squeeze(0)
         return {
             "wav_gt": wav_gt,
-            "mel_gt": mel_gt
         }
 
     def __len__(self): 
