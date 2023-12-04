@@ -128,3 +128,29 @@ class MultiScaleDiscriminator(nn.Module):
         return outs, features
             
 
+class Discriminator(nn.Module):
+    def __init__(self):
+        super().__init__()
+
+        self.mdp = MultiPeriodDiscriminator()
+        self.msd = MultiScaleDiscriminator()
+    
+    def forward(self, gen, real):
+        if gen.shape[-1] > real.shape[-1]:
+            real = nn.ConstantPad3d(padding=(0, 0, 0, 0, 0, gen.shape[-1] - real.shape[-1]), value=0)(real)
+        
+        period_real, period_real_features = self.mdp(real)
+        period_gen, period_gen_features = self.mdp(gen)
+        scale_real, scale_real_features = self.msd(real)
+        scale_gen, scale_gen_features = self.msd(gen)
+
+        return {
+            "period_real": period_real,
+            "period_gen": period_gen,
+            "scale_real": scale_real,
+            "scale_gen": scale_gen,
+            "period_real_features": period_real_features,
+            "period_gen_features": period_gen_features,
+            "scale_real_features": scale_real_features,
+            "scale_gen_features": scale_gen_features,
+        }
