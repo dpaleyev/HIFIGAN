@@ -9,7 +9,7 @@ class HiFiLoss(nn.Module):
         self.mel_lambda = mel_lambda
         self.mel_spectrogram = MelSpectrogram(MelSpectrogramConfig)
     
-    def forward(self, mel, gen,
+    def forward(self, spectrogram, gen_wav,
                 period_gen,
                 period_gen_features,
                 period_real,
@@ -20,7 +20,7 @@ class HiFiLoss(nn.Module):
                 scale_real_features, **kwargs):
         
         gen_spectrogram = self.mel_spectrogram(gen.squeeze(1))
-        spectrogram = nn.ConstantPad3d(padding=(0, 0, 0, 0, 0, gen_spectrogram.shape[-1] - spectrogram.shape[-1]), value=0)(mel)
+        spectrogram = nn.ConstantPad3d(padding=(0, 0, 0, 0, 0, gen_spectrogram.shape[-1] - spectrogram.shape[-1]), value=0)(spectrogram)
 
         adv_loss = 0
         for periods in period_gen:
@@ -41,12 +41,12 @@ class HiFiLoss(nn.Module):
 
         gen_loss = adv_loss + self.fm_lambda * fm_loss + self.mel_lambda * mel_loss
 
-        desc_loss = 0
+        disc_loss = 0
         for real, gen in zip(period_real, period_gen):
-            desc_loss = desc_loss + torch.mean((real - 1) ** 2) + torch.mean(gen ** 2)
+            disc_loss = disc_loss + torch.mean((real - 1) ** 2) + torch.mean(gen ** 2)
         for real, gen in zip(scale_real, scale_gen):
-            desc_loss = desc_loss + torch.mean((real - 1) ** 2) + torch.mean(gen ** 2)
+            disc_loss = disc_loss + torch.mean((real - 1) ** 2) + torch.mean(gen ** 2)
         
-        return desc_loss, gen_loss, adv_loss, fm_loss, mel_loss
+        return disc_loss, gen_loss, adv_loss, fm_loss, mel_loss
 
         

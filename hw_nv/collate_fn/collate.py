@@ -8,8 +8,6 @@ def collate_fn(batch):
     """ 
     Args:
         batch: list of dicts with keys "wav_gt"
-    Returns:
-        dict with keys "wav_gt", "mel_gt"
     """
 
     wav_gt = [item["wav_gt"] for item in batch]
@@ -19,5 +17,5 @@ def collate_fn(batch):
 
     return {
         "wav_gt": wav_gt,
-        "mel_gt": mel_gt,
+        "spectrogram": mel_gt,
     }

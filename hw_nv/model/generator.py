@@ -91,4 +91,4 @@ class Generator(nn.Module):
         x = self.head(x)
         for block in self.blocks:
             x = block(x)
-        return self.out(x)
+        return {"gen_wav" : self.out(x)}

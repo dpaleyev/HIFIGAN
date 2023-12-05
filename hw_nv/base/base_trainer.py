@@ -12,7 +12,7 @@ class BaseTrainer:
     Base class for all trainers
     """
 
-    def __init__(self, model: BaseModel, criterion, gen_optimizer, desc_optimizer, config, device, gen_lr_scheduler, desc_lr_scheduler):
+    def __init__(self, model: BaseModel, criterion, gen_optimizer, disc_optimizer, config, device, gen_lr_scheduler, disc_lr_scheduler):
         self.device = device
         self.config = config
         self.logger = config.get_logger("trainer", config["trainer"]["verbosity"])
@@ -20,9 +20,9 @@ class BaseTrainer:
         self.model = model
         self.criterion = criterion
         self.gen_optimizer = gen_optimizer
-        self.desc_optimizer = desc_optimizer
+        self.disc_optimizer = disc_optimizer
         self.gen_lr_scheduler = gen_lr_scheduler
-        self.desc_lr_scheduler = desc_lr_scheduler
+        self.disc_lr_scheduler = disc_lr_scheduler
 
         # for interrupt saving
         self._last_epoch = 0
@@ -144,9 +144,9 @@ class BaseTrainer:
             "epoch": epoch,
             "state_dict": self.model.state_dict(),
             "gen_optimizer": self.gen_optimizer.state_dict(),
-            "desc_optimizer": self.desc_optimizer.state_dict(),
+            "disc_optimizer": self.disc_optimizer.state_dict(),
             "gen_lr_scheduler": self.gen_lr_scheduler.state_dict() if self.gen_lr_scheduler is not None else None,
-            "desc_lr_scheduler": self.desc_lr_scheduler.state_dict() if self.desc_lr_scheduler is not None else None,
+            "disc_lr_scheduler": self.disc_lr_scheduler.state_dict() if self.disc_lr_scheduler is not None else None,
             "monitor_best": self.mnt_best,
             "config": self.config,
         }
@@ -182,9 +182,9 @@ class BaseTrainer:
         # load optimizer state from checkpoint only when optimizer type is not changed.
         if (
                 checkpoint["config"]["gen_optimizer"] != self.config["gen_optimizer"] or
-                checkpoint["config"]["desc_optimizer"] != self.config["desc_optimizer"] or
+                checkpoint["config"]["disc_optimizer"] != self.config["disc_optimizer"] or
                 checkpoint["config"]["gen_lr_scheduler"] != self.config["gen_lr_scheduler"] or
-                checkpoint["config"]["desc_lr_scheduler"] != self.config["desc_lr_scheduler"]
+                checkpoint["config"]["disc_lr_scheduler"] != self.config["disc_lr_scheduler"]
         ):
             self.logger.warning(
                 "Warning: Optimizer or lr_scheduler given in config file is different "
@@ -192,9 +192,9 @@ class BaseTrainer:
             )
         else:
             self.gen_optimizer.load_state_dict(checkpoint["gen_optimizer"])
-            self.desc_optimizer.load_state_dict(checkpoint["desc_optimizer"])
+            self.disc_optimizer.load_state_dict(checkpoint["disc_optimizer"])
             self.gen_lr_scheduler.load_state_dict(checkpoint["gen_lr_scheduler"])
-            self.desc_lr_scheduler.load_state_dict(checkpoint["desc_lr_scheduler"])
+            self.disc_lr_scheduler.load_state_dict(checkpoint["disc_lr_scheduler"])
 
         self.logger.info(
             "Checkpoint loaded. Resume training from epoch {}".format(self.start_epoch)

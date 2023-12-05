@@ -47,7 +47,7 @@ class MultiPeriodDiscriminator(nn.Module):
     def __init__(self):
         super().__init__()
 
-        self.descriminators = nn.ModuleList([
+        self.discriminators = nn.ModuleList([
             PeriodDiscriminator(p)
             for p in [2, 3, 5, 7, 11]
         ])
@@ -55,7 +55,7 @@ class MultiPeriodDiscriminator(nn.Module):
     def forward(self, x):
         outs = []
         features = []
-        for d in self.descriminators:
+        for d in self.discriminators:
             out, feature = d(x)
             outs.append(out)
             features.append(feature)
@@ -105,7 +105,7 @@ class ScaleDiscriminator(nn.Module):
 class MultiScaleDiscriminator(nn.Module):
     def __init__(self):
         super().__init__()
-        self.descriminators = nn.ModuleList([
+        self.discriminators = nn.ModuleList([
             ScaleDiscriminator()
             for i in range(3)
         ])
@@ -122,7 +122,7 @@ class MultiScaleDiscriminator(nn.Module):
             x_in = x.copy()
             for j in range(i):
                 x_in = self.pooling[j](x_in)
-            out, feature = self.descriminators[i](x_in)
+            out, feature = self.discriminators[i](x_in)
             outs.append(out)
             features.append(feature)
         return outs, features
