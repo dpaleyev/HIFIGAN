@@ -20,7 +20,13 @@ class HiFiLoss(nn.Module):
                 scale_real_features, **kwargs):
         
         gen_spectrogram = self.mel_spectrogram(gen_wav.squeeze(1))
-        spectrogram = nn.ConstantPad3d(padding=(0, 0, 0, 0, 0, gen_spectrogram.shape[-1] - spectrogram.shape[-1]), value=0)(spectrogram)
+
+        if spectrogram.shape[-1] < gen_spectrogram.shape[-1]:
+            diff = gen_spectrogram.shape[-1] - spectrogram.shape[-1]
+            pad_value = MelSpectrogramConfig.pad_value
+            pad = torch.zeros((spectrogram.shape[0], spectrogram.shape[1], diff))
+            pad = pad.fill_(pad_value).to(spectrogram.device)
+            spectrogram = torch.cat([spectrogram, pad], dim=-1)
 
         adv_loss = 0
         for periods in period_gen:

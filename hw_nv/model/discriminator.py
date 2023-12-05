@@ -136,9 +136,11 @@ class Discriminator(nn.Module):
         self.msd = MultiScaleDiscriminator()
     
     def forward(self, gen, real):
-        print(gen.shape, real.shape)
+        
         if gen.shape[-1] > real.shape[-1]:
-            real = nn.ConstantPad3d(padding=(0, 0, 0, 0, 0, gen.shape[-1] - real.shape[-1]), value=0)(real)
+            pad_amount = gen.shape[-1] - real.shape[-1]
+            pad = torch.zeros((real.shape[0], real.shape[1], pad_amount), device=real.device)
+            real = torch.cat([real, pad], dim=-1)
         
         period_real, period_real_features = self.mdp(real)
         period_gen, period_gen_features = self.mdp(gen)
