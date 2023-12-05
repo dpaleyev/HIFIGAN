@@ -1,0 +1,14 @@
+torch
+torchvision
+numpy
+tqdm
+tensorboard
+matplotlib
+pandas
+
+speechbrain~=0.5.12
+datasets
+editdistance
+wandb
+torchaudio~=0.11.0
+pillow
