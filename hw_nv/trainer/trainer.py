@@ -109,7 +109,7 @@ class Trainer(BaseTrainer):
                 self.writer.set_step((epoch - 1) * self.len_epoch + batch_idx)
                 self.logger.debug(
                     "Train Epoch: {} {} Generator Loss: {:.6f} Discremenator Loss: {:.6f}".format(
-                        epoch, self._progress(batch_idx), batch["gen_loss"].item(), batch["disc_loss"].item()
+                        epoch, self._progress(batch_idx), batch["generator_loss"].item(), batch["discriminator_loss"].item()
                     )
                 )
                 self.writer.add_scalar(
