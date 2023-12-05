@@ -24,8 +24,10 @@ def synthesize(model, input_dir, output_dir, device, writer):
 
         pred = model(mel_spec.to(device))["gen_wav"].squeeze(0)
         pred = pred.detach().cpu()
-
-        torchaudio.save(str(output_dir / filename), pred, 22050)
+        
+        output_dir_path = Path(output_dir)
+        output_dir_path.mkdir(exist_ok=True, parents=True)
+        torchaudio.save(str(output_dir_path / filename), pred, 22050)
 
 
         writer.wandb.log({
@@ -90,5 +92,5 @@ if __name__ == "__main__":
     model.load_state_dict(state_dict)
     model = model.to(device)
     model.eval()
-
+    
     synthesize(model, args.input, args.output, device, writer)
