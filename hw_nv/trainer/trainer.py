@@ -192,9 +192,8 @@ class Trainer(BaseTrainer):
         image = PIL.Image.open(plot_spectrogram_to_buf(spectrogram))
         self.writer.add_image("spectrogram", ToTensor()(image))
 
-    def _log_audio(self, audio_batch):
-        audio = random.choice(audio_batch.cpu())
-        self.writer.add_audio("audio", audio, sample_rate=16000)
+    def _log_audio(self, audio, sample_rate, name):
+        self.writer.add_audio(name, audio, sample_rate=sample_rate)
 
     @torch.no_grad()
     def get_grad_norm(self, model, norm_type=2):
