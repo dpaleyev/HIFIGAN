@@ -71,7 +71,7 @@ if __name__ == "__main__":
     )
 
 
-    assert args.checkpoitn is not None, "Please specify checkpoint path"
+    assert args.resume is not None, "Please specify checkpoint path"
 
     with open(args.config) as f:
         config = ConfigParser(json.load(f))
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     logger.info(model)
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    state_dict = torch.load(args.checkpoint, map_location=device)["state_dict"]
+    state_dict = torch.load(args.resume, map_location=device)["state_dict"]
     model.load_state_dict(state_dict)
     model = model.to(device)
     model.eval()
