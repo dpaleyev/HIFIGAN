@@ -12,3 +12,4 @@ editdistance
 wandb
 torchaudio
 pillow
+librosa
