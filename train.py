@@ -73,7 +73,7 @@ def main(config):
 
 
 if __name__ == "__main__":
-    args = argparse.ArgumentParser(discription="PyTorch Template")
+    args = argparse.ArgumentParser(description="PyTorch Template")
     args.add_argument(
         "-c",
         "--config",
