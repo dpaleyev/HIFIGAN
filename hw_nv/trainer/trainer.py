@@ -64,7 +64,7 @@ class Trainer(BaseTrainer):
         """
         Move all necessary tensors to the HPU
         """
-        for tensor_for_gpu in ["mel_gt", "wav_gt"]:
+        for tensor_for_gpu in ["spectrogram", "wav_gt"]:
             batch[tensor_for_gpu] = batch[tensor_for_gpu].to(device)
         return batch
 
@@ -85,7 +85,7 @@ class Trainer(BaseTrainer):
         self.train_metrics.reset()
         self.writer.add_scalar("epoch", epoch)
 
-        progreass_bar = tqdm(range(self.len_epoch), disc="train")
+        progreass_bar = tqdm(range(self.len_epoch), desc="train")
 
         for batch_idx, batch in enumerate(self.train_dataloader):
             progreass_bar.update()
@@ -132,7 +132,7 @@ class Trainer(BaseTrainer):
         if self.gen_lr_scheduler is not None:
             self.gen_lr_scheduler.step()
             
-        if self.desc_lr_scheduler is not None:
+        if self.disc_lr_scheduler is not None:
             self.disc_lr_scheduler.step()
 
         return log
@@ -174,7 +174,7 @@ class Trainer(BaseTrainer):
             metrics.update("fm_loss", fm_loss.item())
             metrics.update("mel_loss", mel_loss.item())
             metrics.update("gen_grad_norm", self.get_grad_norm(self.model.generator))
-            metrics.update("decs_grad_norm", self.get_grad_norm(self.model.descriminator))
+            metrics.update("decs_grad_norm", self.get_grad_norm(self.model.discriminator))
         return batch
 
     def _progress(self, batch_idx):

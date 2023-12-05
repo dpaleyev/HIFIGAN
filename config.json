@@ -23,8 +23,8 @@
                 {
                     "type": "LJSpeechDataset",
                     "args": {
-                        "dir": "data",
-                        "max_len": 22528
+                        "root_dir": "data",
+                        "wav_max_len": 22528
                     }
                 }
             ]

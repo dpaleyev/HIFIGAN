@@ -6,10 +6,10 @@ from hw_nv.model.generator import Generator
 from hw_nv.model.discriminator import Discriminator
 
 class HiFiGAN(BaseModel):
-    def __init__(self, input_channels, hidden_chanels, upsample_size, upsample_stride, resblock_size, resblock_dilations):
+    def __init__(self, input_channels, hidden_channels, upsample_size, upsample_stride, resblock_size, resblock_dilations, *args, **kwargs):
         super().__init__()
 
-        self.generator = Generator(input_channels, hidden_chanels, upsample_size, upsample_stride, resblock_size, resblock_dilations)
+        self.generator = Generator(input_channels, hidden_channels, upsample_size, upsample_stride, resblock_size, resblock_dilations)
         self.discriminator = Discriminator()
     
     def discriminate(self, gen, real, **batch):

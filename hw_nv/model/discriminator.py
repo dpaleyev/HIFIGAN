@@ -8,23 +8,23 @@ class PeriodDiscriminator(nn.Module):
         self.period = period
 
         self.conv_blocks = nn.ModuleList([
-            nn.Sequentional(
+            nn.Sequential(
                 nn.utils.weight_norm(nn.Conv2d(1, 32, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))),
                 nn.LeakyReLU(),
             ),
-            nn.Sequentional(
+            nn.Sequential(
                 nn.utils.weight_norm(nn.Conv2d(32, 128, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))),
                 nn.LeakyReLU(),
             ),
-            nn.Sequentional(
+            nn.Sequential(
                 nn.utils.weight_norm(nn.Conv2d(128, 512, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))),
                 nn.LeakyReLU(),
             ),
-            nn.Sequentional(
+            nn.Sequential(
                 nn.utils.weight_norm(nn.Conv2d(512, 1024, kernel_size=(5, 1), stride=(3, 1), padding=(2, 0))),
                 nn.LeakyReLU(),
             ),
-            nn.Sequentional(
+            nn.Sequential(
                 nn.utils.weight_norm(nn.Conv2d(1024, 1024, kernel_size=(5, 1), stride=1, padding=(2, 0))),
                 nn.LeakyReLU(),
             ),
@@ -67,27 +67,27 @@ class ScaleDiscriminator(nn.Module):
         super().__init__()
 
         self.conv_blocks = nn.ModuleList([
-            nn.Sequentional(
+            nn.Sequential(
                 nn.utils.weight_norm(nn.Conv1d(1, 16, kernel_size=15, stride=1, padding=7)),
                 nn.LeakyReLU(),
             ),
-            nn.Sequentional(
+            nn.Sequential(
                 nn.utils.weight_norm(nn.Conv1d(16, 64, kernel_size=41, stride=4, groups=4, padding=20)),
                 nn.LeakyReLU(),
             ),
-            nn.Sequentional(
+            nn.Sequential(
                 nn.utils.weight_norm(nn.Conv1d(64, 256, kernel_size=41, stride=4, groups=16, padding=20)),
                 nn.LeakyReLU(),
             ),
-            nn.Sequentional(
+            nn.Sequential(
                 nn.utils.weight_norm(nn.Conv1d(256, 1024, kernel_size=41, stride=4, groups=64, padding=20)),
                 nn.LeakyReLU(),
             ),
-            nn.Sequentional(
+            nn.Sequential(
                 nn.utils.weight_norm(nn.Conv1d(1024, 1024, kernel_size=41, stride=4, groups=256, padding=20)),
                 nn.LeakyReLU(),
             ),
-            nn.Sequentional(
+            nn.Sequential(
                 nn.utils.weight_norm(nn.Conv1d(1024, 1024, kernel_size=5, stride=1, padding=2)),
                 nn.LeakyReLU(),
             ),
@@ -136,6 +136,7 @@ class Discriminator(nn.Module):
         self.msd = MultiScaleDiscriminator()
     
     def forward(self, gen, real):
+        print(gen.shape, real.shape)
         if gen.shape[-1] > real.shape[-1]:
             real = nn.ConstantPad3d(padding=(0, 0, 0, 0, 0, gen.shape[-1] - real.shape[-1]), value=0)(real)
         

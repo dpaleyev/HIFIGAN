@@ -11,7 +11,7 @@ def collate_fn(batch):
     """
 
     wav_gt = [item["wav_gt"] for item in batch]
-    wav_gt = torch.stack(wav_gt).squeeze(1)
+    wav_gt = torch.stack(wav_gt)
 
     mel_gt = mel_spec_transf(wav_gt).squeeze(1)
 

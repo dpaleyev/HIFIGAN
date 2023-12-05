@@ -24,7 +24,7 @@ class ResBlock(nn.Module):
     def forward(self, x):
         out = 0
         for block in self.blocks:
-            out = out + block(out)
+            out = out + block(x)
         return out
         
 
