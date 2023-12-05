@@ -19,7 +19,7 @@ class HiFiLoss(nn.Module):
                 scale_real,
                 scale_real_features, **kwargs):
         
-        gen_spectrogram = self.mel_spectrogram(gen.squeeze(1))
+        gen_spectrogram = self.mel_spectrogram(gen_wav.squeeze(1))
         spectrogram = nn.ConstantPad3d(padding=(0, 0, 0, 0, 0, gen_spectrogram.shape[-1] - spectrogram.shape[-1]), value=0)(spectrogram)
 
         adv_loss = 0
