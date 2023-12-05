@@ -17,13 +17,13 @@
     },
     "data": {
         "train": {
-            "batch_size": 16,
-            "num_workers": 2,
+            "batch_size": 32,
+            "num_workers": 8,
             "datasets": [
                 {
                     "type": "LJSpeechDataset",
                     "args": {
-                        "root_dir": "data",
+                        "root_dir": "/notebooks/data",
                         "wav_max_len": 22528
                     }
                 }
@@ -49,13 +49,13 @@
     "gen_lr_scheduler": {
         "type": "ExponentialLR",
         "args": {
-            "gamma": 0.999
+            "gamma": 0.995
         }
     },
     "disc_lr_scheduler": {
         "type": "ExponentialLR",
         "args": {
-            "gamma": 0.999
+            "gamma": 0.995
         }
     },
 
@@ -67,15 +67,15 @@
         }
     },
     "trainer": {
-        "epochs": 3500,
+        "epochs": 1000,
         "save_dir": "saved/",
         "save_period": 1,
         "verbosity": 2,
         "monitor": "off",
-        "early_stop": 100,
+        "early_stop": 1000,
         "visualize": "wandb",
         "wandb_project": "hifigan",
-        "len_epoch": 500,
-        "grad_norm_clip": 10000
+        "len_epoch": 100,
+        "grad_norm_clip": 100
     }
 }
