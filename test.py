@@ -70,6 +70,7 @@ if __name__ == "__main__":
         help="Path to output directory"
     )
 
+    args = args.parse_args()
 
     assert args.resume is not None, "Please specify checkpoint path"
 
