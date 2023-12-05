@@ -119,7 +119,7 @@ class MultiScaleDiscriminator(nn.Module):
         outs = []
         features = []
         for i in range(3):
-            x_in = x.copy()
+            x_in = x.clone()
             for j in range(i):
                 x_in = self.pooling[j](x_in)
             out, feature = self.discriminators[i](x_in)
