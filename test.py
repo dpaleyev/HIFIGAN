@@ -34,7 +34,7 @@ def synthesize(model, input_dir, output_dir, device, writer):
             f"genrated_{filename}": writer.wandb.Audio(pred.numpy().T, sample_rate=22050)
         })
         writer.wandb.log({
-            f"goriginal_{filename}": writer.wandb.Audio(wav.numpy().T, sample_rate=22050)
+            f"original_{filename}": writer.wandb.Audio(wav.numpy().T, sample_rate=22050)
         })
 
 if __name__ == "__main__":
