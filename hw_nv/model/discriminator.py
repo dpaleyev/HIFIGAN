@@ -124,7 +124,7 @@ class MultiScaleDiscriminator(nn.Module):
                 x_in = self.pooling[j](x_in)
             out, feature = self.discriminators[i](x_in)
             outs.append(out)
-            features.append(feature)
+            features.extend(feature)
         return outs, features
             
 
