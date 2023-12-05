@@ -91,7 +91,4 @@ if __name__ == "__main__":
     model = model.to(device)
     model.eval()
 
-    
-
-
-
+    synthesize(model, args.input, args.output, device, writer)
