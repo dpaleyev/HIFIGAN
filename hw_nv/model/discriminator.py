@@ -58,7 +58,7 @@ class MultiPeriodDiscriminator(nn.Module):
         for d in self.discriminators:
             out, feature = d(x)
             outs.append(out)
-            features.append(feature)
+            features.extend(feature)
         return outs, features
 
 
